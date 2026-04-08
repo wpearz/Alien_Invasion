@@ -1,13 +1,11 @@
 import sys
 import pygame
-
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
 from alien import Alien    
 class AlienInvasion:
-    """Overallclass to manage game assets and behavior."""
-    
+    """Overallclass to manage game assets and behavior."""   
     def __init__(self):
         """Initialize the game, and create game resources."""
         pygame.init()
@@ -23,16 +21,11 @@ class AlienInvasion:
         self.bullets = pygame.sprite.Group()
         self.aliens = pygame.sprite.Group()
         self._create_fleet()
-
-
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
     def _create_fleet(self):
         alien = Alien(self)
-        self.aliens.add(alien)
-
-        
+        self.aliens.add(alien)     
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-
     def _check_events(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -42,22 +35,17 @@ class AlienInvasion:
                 self._check_keydown_events(event)
             elif event.type == pygame.KEYUP:
                 self._check_keyup_events(event)
-
     
-    def _check_keydown_events(self,event):
-        
+    def _check_keydown_events(self,event):  
         if event.key == pygame.K_RIGHT:
             self.ship.moving_right = True
-
         elif event.key == pygame.K_LEFT:            
-            self.ship.moving_left = True
-            
+            self.ship.moving_left = True   
         elif event.key == pygame.K_q:
             pygame.quit()
             sys.exit()
         elif event.key == pygame.K_SPACE:
-            self._fire_bullet()
-                
+            self._fire_bullet()                
     
     def _check_keyup_events(self,event):
 
@@ -65,12 +53,10 @@ class AlienInvasion:
             self.ship.moving_right = False        
         elif event.key == pygame.K_LEFT:
             self.ship.moving_left = False
-
     def _fire_bullet(self):
         """Create a new bullet and add it to the bullets group."""
         new_bullet = Bullet(self)
-        self.bullets.add(new_bullet)
-            
+        self.bullets.add(new_bullet)          
     def _update_screen(self):
         self.screen.fill(self.settings.bg_color)
         for bullet in self.bullets.sprites():
@@ -80,15 +66,7 @@ class AlienInvasion:
         #Make the most recently drawn screen visible
         pygame.display.flip()
         self.clock.tick(60)
-         
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    
-                
-
-
-        
-#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-  
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>  
     def run_game(self):
        # """Start the main loop for the game."""
         while True:
@@ -101,8 +79,6 @@ class AlienInvasion:
                 if bullet.rect.bottom <= 0:
                     self.bullets.remove(bullet)
             self._update_screen()
-   
-
 
 if __name__ == '__main__':
     #Make a game instance,and run the game.
