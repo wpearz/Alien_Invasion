@@ -4,8 +4,7 @@ import pygame
 from settings import Settings
 from ship import Ship
 from bullet import Bullet
-from aliens import Alien
-    
+from alien import Alien    
 class AlienInvasion:
     """Overallclass to manage game assets and behavior."""
     
@@ -20,9 +19,18 @@ class AlienInvasion:
         pygame.display.set_caption("Alien Invasion")
 
         self.ship = Ship(self)
-        self.aliens = Alien(self)
         self.bullet = Bullet(self)
         self.bullets = pygame.sprite.Group()
+        self.aliens = pygame.sprite.Group()
+        self._create_fleet()
+
+
+#>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+    def _create_fleet(self):
+        alien = Alien(self)
+        self.aliens.add(alien)
+
+        
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 
     def _check_events(self):
@@ -68,31 +76,15 @@ class AlienInvasion:
         for bullet in self.bullets.sprites():
             bullet.draw_bullet()
         self.ship.blitme()
-        self.aliens.blitme()
+        self.aliens.draw(self.screen)
         #Make the most recently drawn screen visible
         pygame.display.flip()
         self.clock.tick(60)
          
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-    def _create_fleet(self):
-        alien = Alien(self)
-        alien_width,alien_height = alien.rect.size
-        current_x,current_y = alien_width,alien_height
-        while current_y <(self.settings.screen_height - alien_height):
-            while current_x < (self.settings.screen_width - alien_width):
-                self._create_alien(current_x)
-                current.x += 2*alien_width
-                current_y += 2*alien_height
-        alien = pygame.sprite.Group()
-
     
                 
 
-    def _create_alien(self,x_position):
-        new_alien = Alien(self)
-        new_alien.x = x_position
-        new_alien.rect.x = x_position
-        self.aliens.add(new_alien)
 
         
 #>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -103,7 +95,6 @@ class AlienInvasion:
             self._check_events()
             self.ship.update()
             self.bullets.update()
-            self.aliens.update()
             
             #get rid of bullets that have disappeared
             for bullet in self.bullets.copy():
